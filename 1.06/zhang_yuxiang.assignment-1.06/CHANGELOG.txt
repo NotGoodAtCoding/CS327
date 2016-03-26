@@ -1,0 +1,201 @@
+=================================
+Name: Yuxiang Zhang ID: 242882640
+=================================
+
+============
+version 1.06
+============
+
+---------
+Mar. 22
+---------
+Add back display of light of sight
+Add help page using ncurses
+Add ui.c for GUI related functions
+Remove obsolte monster ID
+Remove unused util_printHeading
+Remove unused util_putc
+
+---------
+Mar. 21
+---------
+Add debug.c to generete DEBUG.log for debugging
+Add dungeon_isVisible to determine if given location is visible by PC
+Add getters and setters for all character member variables
+Add room_isInSameRoom method to find if two points are in the same room
+Convert struct Character to class __Character, __PC, __NPC
+Implement fog of war by adding visible dungeon in __PC
+Remove util_cat method
+
+============
+version 1.05
+============
+
+---------
+Mar. 08
+---------
+Disable PC tunneling ability
+
+---------
+Mar. 07
+---------
+Add 'm' option for displaying a list of monsters
+Add stairs
+Remove unused character_init method
+
+---------
+Mar. 06
+---------
+Add moving keys
+Add quit option
+Change most printf to mvprintw
+Use 'A' key for automatic PC moving
+
+============
+version 1.04
+============
+
+---------
+Feb. 22
+---------
+Add last seen PC location
+Add display of line of sight with "--sight" switch
+Implement telepathic moving method move_toward()
+Update README.txt
+
+---------
+Feb. 14
+---------
+Improve PC AI
+Set default number of monsters to 10
+
+---------
+Feb. 13
+---------
+Add heap_delete() method
+Add moving algorithm for PC
+Add priority queue for game turns
+Add --nummon option
+Add --cheat option for making the PC invulnerable
+Add --ptime option for setting pause time
+Implement erratic behavoir
+Implement intelligent and telepathic move using dijkstra
+Implement tunneling ability
+
+---------
+Feb. 12
+---------
+Add colors for monsters
+Add move.c to include characters moving functions
+Implement random move function
+Revise heap to allow multiple instances
+
+============
+version 1.03
+============
+
+---------
+Feb. 08
+---------
+Add --hpw option for redefining conversion: weight = hardness / hpw + 1
+Add --pc option for fixing starting location of play character
+Add usage exmple in README.txt for how to get exact match to the sample
+Declare all variables in core.h as extern
+Merge help.c into util.c
+Rename main program to rlg327
+Submit attempt 1
+
+---------
+Feb. 07
+---------
+Implement heap to replace linear search
+Randomize PC starting location
+Update random path paving to be based on hardness
+
+---------
+Feb. 06
+---------
+Add point.c
+Change the method dijkstra() to take x, y instead of Point
+Solve memory leaks
+Update README.txt to include dijkstra.c how it works
+
+---------
+Feb. 05
+---------
+Implement Dijkstra's algorithm without using heap
+Implement non-tunneling distance map
+Implement tunneling distance map
+
+============
+version 1.02
+============
+
+---------
+Feb. 02
+---------
+Change Room's x, y, w, h to be declared as unsigned char
+Solve memory leaks
+
+---------
+Feb. 01
+---------
+Separate dungeon_fprint() from dungeon_load() and dungeon_generate()
+
+---------
+Jan. 31
+---------
+Add documentations to helper methods
+Update README.txt to include important functions in dungeon.c and main.c
+
+---------
+Jan. 30
+---------
+Add util.c
+Add util_base62() method for converting int to a single char
+Add util_cat() method for concatenating strings
+Add util_reverse() method for reversing bytes
+Move main() from dungeon.c to main.c
+Move rnum() from rnum.c to util.c
+Implement --load option
+Implement --save option
+Rename excutable program from dungeon to main
+Update README.txt to include --load and --save
+
+============
+version 1.01
+============
+
+---------
+Jan. 25
+---------
+Add "specifications met" section in README.txt
+Add room_delete() method
+
+---------
+Jan. 24
+---------
+Add -g -Wall -Werror for making every *.o and executable
+
+---------
+Jan. 23
+---------
+Add help.c for displaying a help page
+Use help page to display the user manual
+
+---------
+Jan. 22
+---------
+Add -h option to display a help page
+Add README.txt
+Change from passing by value to passing by address of struct
+
+---------
+Jan. 21
+---------
+Add makefile
+Implement dungeon.c as a main program to generate dungeon
+Implement path.c for paving path from room to room
+Implement room.c for handling room creation
+Implement rnum.c for generating random number
+ 
