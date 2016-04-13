@@ -13,12 +13,18 @@
 #include "utils.h"
 #include "path.h"
 #include "io.h"
+#include "equipment.h"
 
 void do_combat(dungeon_t *d, character *atk, character *def)
 {
   //if neither are the pc, do nothing
   if(atk != d->pc && def != d->pc){
     return;
+  }
+
+  //If attacker is the pc, apply bonus damage
+  if(atk == d->pc){
+    def->hp -= ((pc *) atk)->bonus_damage;
   }
 
   def->hp -= atk->damage->roll();
@@ -37,6 +43,7 @@ void move_character(dungeon_t *d, character *c, pair_t next)
       ((next[dim_y] != character_get_y(c)) ||
        (next[dim_x] != character_get_x(c)))) {
     do_combat(d, c, charpair(next));
+    return;
   }
   /* No character in new position. */
 
@@ -196,6 +203,13 @@ uint32_t move_pc(dungeon_t *d, uint32_t dir)
 
   if ((dir != '>') && (dir != '<') && (mappair(next) >= ter_floor)) {
     move_character(d, d->pc, next);
+
+    if(d->objmap[d->pc->position[dim_y]][d->pc->position[dim_x]]){
+      attempt_pickup(d);
+    }
+
+    pc_update_stats(d->pc);
+
     dijkstra(d);
     dijkstra_tunnel(d);
 

@@ -1,0 +1,28 @@
+CHANGELOG
+
+ASSIGNMENT 1.09
+
+-pc now has default HP set to 1000, default speed set to 10;
+-Updated combat in the move.cpp file to account for hitpoints
+  and npc collisions
+-Added new menu elements to equipment.cpp, added calls to io.cpp
+  for w, t, d, i, e, I
+-Added attempt_pickup to move_pc in move.cpp
+-Added get_desc() in object.cpp to return description for
+  inspection menu
+-Added updating stats for the PC every turn in move.cpp
+
+Assignment checklist:
+equipment slots
+carry slots
+added commands w t d x i e I
+failure handling (input ignored)
+slot numbers and name of items displayed in menu
+user may use escape (or 'q') to close menu
+Speed and damage bonuses are applied to the pc
+NPCs do not attack other NPCs, and are blocked by them
+Combat works as described / expected
+all attacks connect
+damage is applied through dice rolls (NOTE: bonus stats
+ from items are calculated every turn )
+ character HP is reduced by calculated damage and they die <=0.

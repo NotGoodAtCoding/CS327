@@ -795,13 +795,15 @@ uint32_t parse_descriptions(dungeon_t *d)
   uint32_t retval;
 
   retval = 0;
+/*
 
   file = getenv("HOME");
   if (file.length() == 0) {
     file = ".";
   }
   file += std::string("/") + SAVE_DIR + "/" + MONSTER_DESC_FILE;
-
+*/
+  file = MONSTER_DESC_FILE;
   f.open(file.c_str());
 
   if (parse_monster_descriptions(f, d, &d->monster_descriptions)) {
@@ -809,13 +811,15 @@ uint32_t parse_descriptions(dungeon_t *d)
   }
 
   f.close();
+/*
 
   file = getenv("HOME");
   if (file.length() == 0) {
     file = ".";
   }
   file += std::string("/") + SAVE_DIR + "/" + OBJECT_DESC_FILE;
-
+*/
+  file = OBJECT_DESC_FILE;
   f.open(file.c_str());
 
   if (parse_object_descriptions(f, d, &d->object_descriptions)) {

@@ -9,6 +9,7 @@
 #include "utils.h"
 #include "move.h"
 #include "path.h"
+#include "equipment.h"
 
 void delete_pc(character *the_pc)
 {
@@ -60,6 +61,8 @@ void config_pc(dungeon_t *d)
 
   dijkstra(d);
   dijkstra_tunnel(d);
+
+  init_inventory(d);
 }
 
 uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
@@ -169,4 +172,17 @@ void pc_observe_terrain(character *the_pc, dungeon_t *d)
 int32_t is_illuminated(character *the_pc, int8_t y, int8_t x)
 {
   return ((pc *) the_pc)->visible[y][x];
+}
+
+
+void pc_update_stats(character *the_pc){
+  ((pc *) the_pc)->bonus_speed =0;
+  ((pc *) the_pc)->bonus_damage =0;
+  int i=0;
+  for( ; i<EQUIPMENT_MAX; i++){
+    if(((pc *) the_pc)->equipment[i]){
+      ((pc *) the_pc)->bonus_speed += ((pc *) the_pc)->equipment[i]->get_speed();
+      ((pc *) the_pc)->bonus_damage += ((pc *) the_pc)->equipment[i]->roll_dice();
+    }
+  }
 }

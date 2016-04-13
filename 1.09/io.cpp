@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <signal.h>
+#include <curses.h>
 
 #include "io.h"
 #include "move.h"
@@ -11,6 +12,7 @@
 #include "pc.h"
 #include "utils.h"
 #include "dungeon.h"
+#include "equipment.h"
 
 /* Same ugly hack we did in path.c */
 static dungeon_t *dungeon;
@@ -69,7 +71,7 @@ void io_init_terminal(dungeon_t *d)
   itv.it_interval.tv_usec = 200000; /* 1/5 seconds */
   itv.it_value.tv_sec = 0;
   itv.it_value.tv_usec = 200000;
-  setitimer(ITIMER_REAL, &itv, NULL);
+  //setitimer(ITIMER_REAL, &itv, NULL);
   dungeon = d;
   signal(SIGALRM, sigalrm_handler);
 }
@@ -694,6 +696,34 @@ void io_handle_input(dungeon_t *d)
                        "be no \"more\" prompt.");
       io_queue_message("Have fun!  And happy printing!");
       fail_code = 0;
+      break;
+    case 'w':
+      pc_equip_menu(d);
+      fail_code = 0;
+      break;
+    case 't':
+      pc_unequip_menu(d);
+      fail_code=0;
+      break;
+    case 'd':
+      pc_drop_menu(d);
+      fail_code=0;
+      break;
+    case 'x':
+      pc_expunge_menu(d);
+      fail_code=0;
+      break;
+    case 'i':
+      pc_inventory_menu(d);
+      fail_code=0;
+      break;
+    case 'e':
+      pc_equipment_menu(d);
+      fail_code=0;
+      break;
+    case 'I':
+      pc_inspection_menu(d);
+      fail_code=0;
       break;
     default:
       /* Also not in the spec.  It's not always easy to figure out what *

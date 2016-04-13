@@ -6,6 +6,10 @@
 
 # include "dims.h"
 # include "utils.h"
+# include "object.h"
+
+#define EQUIPMENT_MAX 12
+#define CARRY_MAX     10
 
 typedef struct dungeon dungeon_t;
 class dice;
@@ -31,6 +35,8 @@ class character {
   uint32_t sequence_number;
   uint32_t get_color() { return color[rand_range(0, color.size() - 1)]; }
   char get_symbol() { return symbol; }
+  object *equipment[EQUIPMENT_MAX];
+  object *carry[CARRY_MAX];
 };
 
 int32_t compare_characters_by_next_turn(const void *character1,
