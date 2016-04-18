@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <signal.h>
+#include <curses.h>
 
 #include "io.h"
 #include "move.h"
