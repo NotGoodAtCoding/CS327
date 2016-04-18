@@ -1,0 +1,10 @@
+README
+Written by Stefan Kraus for Com S 327
+Jan 19, 2015
+
+Use:
+Run make all to create the project. 
+The ' iterative ' program will return t he first 100 million members
+of the hyperbinary sequence.
+The ' recursive ' program takes a single integer argument and returns
+the value at that index of the hyperbinary sequence.

@@ -1,0 +1,14 @@
+README
+
+Author: Stefan Kraus
+Assignment: 1.01
+Dungeon Generator.
+
+To Run:
+run ' make all '
+run ' ./ dungeonGenerator <arg0> ' where arg0 is a number between 1 and 7 dictating how many rooms to make.
+for example, running ./dungeonGenerator 4 generates 4 rooms. Amazing.
+
+Description: 
+This generates a 80 x 24 dungeon with a variable number of rooms selected by the user. 
+Rooms are denoted by '.', hallways by '#' and rock walls by ' ' 

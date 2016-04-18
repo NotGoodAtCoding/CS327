@@ -1,0 +1,49 @@
+README
+
+Author: Stefan Kraus
+Assignment: 1.05
+Path Finding
+
+To Run:
+run ' make all '
+run ' ./rlg327 ' with optional --save and --load switches. 
+
+Description: 
+This generates a 80 x 24 dungeon, a Playable character, 
+and up to 10 Monsters.
+The dungeon has ' ' t denote walls, '.' to denote rooms,
+and '#' to denote hallways.
+The PC is rendered as a '@', and monsters are rendered as other
+characters denoting their abilities.
+Rooms are denoted by '.', hallways by '#' and rock walls by ' '
+
+CONTROLS
+7 or y   Attempt to move PC one cell to the upper left.
+8 or k   Attempt to move PC one cell up.
+9 or u   Attempt to move PC one cell to the upper right.
+6 or l   Attempt to move PC one cell to the right.
+3 or n   Attempt to move PC one cell to the lower right.
+2 or j   Attempt to move PC one cell down.
+1 or b   Attempt to move PC one cell to the lower left.
+4 or h   Attempt to move PC one cell to the left.
+>        Attempt to go down stairs.
+<        Attempt to go up stairs.
+space    Rest for a turn. NPCs still move.
+m        Display a list of monsters in the dungeon, with 
+         their symbol and position relative to the PC
+         (e.g.: “c, 2 north and 14 west”).
+up arrow When displaying monster list, if entire list does
+         not fit in screen and not currently at top of
+         list, scroll list up.
+down arrow
+         When displaying monster list, if entire list does
+         not fit in screen and not currently at bottom
+         of list, scroll list down.
+escape   When displaying monster list, return to character control.
+S        Save to disk and exit game. Saving and restoring
+         will be revisited later. For now, this will
+         just quit the game.
+
+CHANGELOG
+
+1.05 - moved changelog to own file
