@@ -197,3 +197,9 @@ const char *character_get_name(const character *c)
 {
   return c->name;
 }
+
+const uint32_t character_get_level(const character *c)
+{
+  return c->level;
+}
+

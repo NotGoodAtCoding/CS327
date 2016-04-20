@@ -15,13 +15,14 @@
 #include "dice.h"
 #include "character.h"
 #include "utils.h"
+#include "pc.h"
 
 #define MONSTER_FILE_SEMANTIC          "RLG327 MONSTER DESCRIPTION"
 #define MONSTER_FILE_VERSION           1U
-#define NUM_MONSTER_DESCRIPTION_FIELDS 8
+#define NUM_MONSTER_DESCRIPTION_FIELDS 9
 #define OBJECT_FILE_SEMANTIC           "RLG327 OBJECT DESCRIPTION"
 #define OBJECT_FILE_VERSION            1U
-#define NUM_OBJECT_DESCRIPTION_FIELDS  12
+#define NUM_OBJECT_DESCRIPTION_FIELDS  13
 
 static const struct {
   const char *name;
@@ -374,23 +375,50 @@ static uint32_t parse_monster_abil(std::ifstream &f,
   return 0;
 }
 
+static uint32_t parse_level(std::ifstream &f,
+                            std::string *lookahead,
+                            uint32_t *level)
+{
+  uint32_t lv;
+
+  eat_blankspace(f);
+
+  if (f.peek() == '\n') {
+    return 1;
+  }
+
+  f >> *lookahead;
+
+
+  if (sscanf(lookahead->c_str(), "%u", &lv) != 1) {
+    return 1;
+  }
+
+  f >> *lookahead;
+
+  *level = lv;
+
+  return 0;
+
+}
+
 static uint32_t parse_monster_description(std::ifstream &f,
                                           std::string *lookahead,
                                           std::vector<monster_description> *v)
 {
   std::string s;
   bool read_name, read_symb, read_color, read_desc,
-       read_speed, read_dam, read_hp, read_abil;
+       read_speed, read_dam, read_hp, read_abil, read_level;
   std::string name, desc;
   char symb;
-  uint32_t abil;
+  uint32_t abil, level;
   std::vector<uint32_t> color;
   dice speed, dam, hp;
   monster_description m;
   int count;
 
   read_name = read_symb = read_color = read_desc =
-              read_speed = read_dam = read_hp = read_abil = false;
+              read_speed = read_dam = read_hp = read_abil = read_level = false;
 
   if (*lookahead != "BEGIN") {
     std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
@@ -452,14 +480,22 @@ static uint32_t parse_monster_description(std::ifstream &f,
         return 1;
       }
       read_speed = true;
-    } else if (*lookahead == "ABIL")  {
+    } else if (*lookahead == "ABIL") {
       if (read_abil || parse_monster_abil(f, lookahead, &abil)) {
+        std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
+        << "Parse error in monster abilities.\n"
+        << "Discarding monster." << std::endl;
+        return 1;
+      }
+      read_abil = true;
+    } else if (*lookahead == "LEVEL")  {
+      if (read_level || parse_level(f, lookahead, &level)) {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in monster abilities.\n"
                   << "Discarding monster." << std::endl;
         return 1;
       }
-      read_abil = true;
+      read_level = true;
     } else if (*lookahead == "HP")    {
       if (read_hp || parse_monster_hp(f, lookahead, &hp)) {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
@@ -494,7 +530,7 @@ static uint32_t parse_monster_description(std::ifstream &f,
   }
   f >> *lookahead;
 
-  m.set(name, desc, symb, color, speed, abil, hp, dam);
+  m.set(name, desc, symb, color, speed, abil, level, hp, dam);
   v->push_back(m);
 
   return 0;
@@ -575,9 +611,9 @@ static uint32_t parse_object_description(std::ifstream &f,
   std::string s;
   bool read_name, read_desc, read_type, read_color,
        read_hit, read_dam, read_dodge, read_def,
-       read_weight, read_speed, read_attr, read_val;
+       read_weight, read_speed, read_attr, read_val, read_level;
   std::string name, desc;
-  uint32_t color;
+  uint32_t color, level;
   object_type_t type;
   dice hit, dam, dodge, def, weight, speed, attr, val;
   object_description o;
@@ -585,7 +621,7 @@ static uint32_t parse_object_description(std::ifstream &f,
 
   read_name = read_desc = read_type = read_color =
               read_hit = read_dam = read_dodge = read_def =
-              read_weight = read_speed = read_attr = read_val = false;
+              read_weight = read_speed = read_attr = read_val = read_level = false;
 
   if (*lookahead != "BEGIN") {
     std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
@@ -703,6 +739,14 @@ static uint32_t parse_object_description(std::ifstream &f,
         return 1;
       }
       read_val = true;
+    } else if (*lookahead == "LEVEL")    {
+      if (read_level || parse_level(f, lookahead, &level)) {
+        std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
+                  << "Parse error in object value.\n"
+                  << "Discarding object." << std::endl;
+        return 1;
+      }
+      read_level = true;
     } else                           {
       std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                 << "Parse error in object description.\n"
@@ -721,7 +765,7 @@ static uint32_t parse_object_description(std::ifstream &f,
   }
   f >> *lookahead;
 
-  o.set(name, desc, type, color, hit, dam,
+  o.set(name, desc, type, color, level, hit, dam,
         dodge, def, weight, speed, attr, val);
   v->push_back(o);
 
@@ -795,12 +839,15 @@ uint32_t parse_descriptions(dungeon_t *d)
   uint32_t retval;
 
   retval = 0;
+/*
 
   file = getenv("HOME");
   if (file.length() == 0) {
     file = ".";
   }
   file += std::string("/") + SAVE_DIR + "/" + MONSTER_DESC_FILE;
+*/
+  file = MONSTER_DESC_FILE;
 
   f.open(file.c_str());
 
@@ -809,12 +856,16 @@ uint32_t parse_descriptions(dungeon_t *d)
   }
 
   f.close();
+/*
 
   file = getenv("HOME");
   if (file.length() == 0) {
     file = ".";
   }
   file += std::string("/") + SAVE_DIR + "/" + OBJECT_DESC_FILE;
+*/
+
+  file = OBJECT_DESC_FILE;
 
   f.open(file.c_str());
 
@@ -852,6 +903,7 @@ void monster_description::set(const std::string &name,
                               const std::vector<uint32_t> &color,
                               const dice &speed,
                               const uint32_t abilities,
+                              const uint32_t level,
                               const dice &hitpoints,
                               const dice &damage)
 {
@@ -861,6 +913,7 @@ void monster_description::set(const std::string &name,
   this->color = color;
   this->speed = speed;
   this->abilities = abilities;
+  this->level = level;
   this->hitpoints = hitpoints;
   this->damage = damage;
 }
@@ -894,7 +947,8 @@ std::ostream &monster_description::print(std::ostream& o)
     o << "Monster failing to live up to full potential";
   }
 
-  return o << std::endl << hitpoints << std::endl << damage << std::endl;
+  return o << std::endl << hitpoints << std::endl
+           << damage << std::endl<< level << std::endl;
 }
 
 std::ostream &operator<<(std::ostream &o, monster_description &m)
@@ -914,26 +968,28 @@ void object_description::set(const std::string &name,
                              const std::string &description,
                              const object_type_t type,
                              const uint32_t color,
+                             const uint32_t level,
                              const dice &hit,
                              const dice &damage,
                              const dice &dodge,
                              const dice &defence,
                              const dice &weight,
                              const dice &speed,
-                             const dice &attrubute,
+                             const dice &attribute,
                              const dice &value)
 {
   this->name = name;
   this->description = description;
   this->type = type;
   this->color = color;
+  this->level = level;
   this->hit = hit;
   this->damage = damage;
   this->dodge = dodge;
   this->defence = defence;
   this->weight = weight;
   this->speed = speed;
-  this->attribute = attrubute;
+  this->attribute = attribute;
   this->value = value;
 }
 
@@ -958,7 +1014,7 @@ std::ostream &object_description::print(std::ostream &o)
 
 return o << hit << std::endl << damage << std::endl << dodge << std::endl
          << defence << std::endl << weight << std::endl << speed << std::endl
-         << attribute << std::endl << value << std::endl;
+         << attribute << std::endl << level << std::endl << value << std::endl;
 }
 
 std::ostream &operator<<(std::ostream &o, object_description &od)
@@ -970,7 +1026,13 @@ npc *monster_description::generate_monster(dungeon_t *d)
 {
   npc *n;
   const std::vector<monster_description> &v = d->monster_descriptions;
-  const monster_description &m = v[rand_range(0, v.size() - 1)];
+
+  unsigned long select = rand_range(0, v.size() - 1);
+  while (v[select].level > d->the_pc->level +1){ //Only select monsters of similar level
+    select = rand_range(0, v.size() - 1);
+  }
+
+  const monster_description &m = v[select];
 
   n = new npc(d, m);
 

@@ -213,7 +213,8 @@ int main(int argc, char *argv[])
   io_init_terminal(&d);
   pc_observe_terrain(d.the_pc, &d);
   io_display(&d);
-  while (pc_is_alive(&d) && dungeon_has_npcs(&d) && !d.save_and_exit) {
+  //Updated WIN CONDITION: Must be above level 10
+  while (pc_is_alive(&d) && (dungeon_has_npcs(&d) || d.the_pc->level < 10) && !d.save_and_exit) {
     do_moves(&d);
     if (!pc_is_alive(&d)) {
       break;

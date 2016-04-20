@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <ncurses.h>
+#include <curses.h>
 
 #include "string.h"
 
@@ -37,7 +38,12 @@ pc::pc()
     in[i] = 0;
   }
 
-  hp = 1000;
+  hp = PC_HP;
+  mp = PC_MP;
+  gold = PC_START_GOLD;
+  level = 0;
+  mana_potions = PC_MP_POTIONS;
+  hp_potions = PC_HP_POTIONS;
 }
 
 pc::~pc()

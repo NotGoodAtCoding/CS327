@@ -11,10 +11,10 @@ class object {
   const std::string &name;
   const std::string &description;
   object_type_t type;
-  uint32_t color;
+  uint32_t color, level;
   pair_t position;
-  const dice &damage;
-  int32_t hit, dodge, defence, weight, speed, attribute, value;
+  const dice &damage, &dodge, &defence;
+  int32_t hit, weight, speed, attribute, value;
   bool seen;
   object *next;
  public:
@@ -23,11 +23,15 @@ class object {
   inline int32_t get_damage_base() const { return damage.get_base(); }
   inline int32_t get_damage_number() const { return damage.get_number(); }
   inline int32_t get_damage_sides() const { return damage.get_sides(); }
+  inline int32_t get_value() const {return value; }
   char get_symbol();
   uint32_t get_color();
+  uint32_t get_level();
   const char *get_name();
   int32_t get_speed();
-  int32_t roll_dice();
+  int32_t roll_damage();
+  int32_t roll_dodge();
+  int32_t roll_def();
   int32_t get_type();
   bool have_seen() { return seen; }
   void has_been_seen() { seen = true; }

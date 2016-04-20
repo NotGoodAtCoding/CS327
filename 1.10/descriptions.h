@@ -44,11 +44,12 @@ class monster_description {
   std::string name, description;
   char symbol;
   std::vector<uint32_t> color;
-  uint32_t abilities;
+  uint32_t abilities, level;
   dice speed, hitpoints, damage;
  public:
   monster_description() : name(),       description(), symbol(0),   color(0),
-                          abilities(0), speed(),       hitpoints(), damage()
+                          abilities(0), level(),         speed(),     hitpoints(),
+                          damage()
   {
   }
   void set(const std::string &name,
@@ -57,6 +58,7 @@ class monster_description {
            const std::vector<uint32_t> &color,
            const dice &speed,
            const uint32_t abilities,
+           const uint32_t level,
            const dice &hitpoints,
            const dice &damage);
   std::ostream &print(std::ostream &o);
@@ -70,11 +72,11 @@ class object_description {
  private:
   std::string name, description;
   object_type_t type;
-  uint32_t color;
+  uint32_t color, level;
   dice hit, damage, dodge, defence, weight, speed, attribute, value;
  public:
   object_description() : name(),    description(), type(objtype_no_type),
-                         color(0),  hit(),         damage(),
+                         color(0),  level(), hit(), damage(),
                          dodge(),   defence(),     weight(),
                          speed(),   attribute(),   value()
   {
@@ -83,13 +85,14 @@ class object_description {
            const std::string &description,
            const object_type_t type,
            const uint32_t color,
+           const uint32_t level,
            const dice &hit,
            const dice &damage,
            const dice &dodge,
            const dice &defence,
            const dice &weight,
            const dice &speed,
-           const dice &attrubute,
+           const dice &attribute,
            const dice &value);
   std::ostream &print(std::ostream &o);
   /* Need all these accessors because otherwise there is a *
@@ -98,6 +101,7 @@ class object_description {
   inline const std::string &get_description() const { return description; }
   inline const object_type_t get_type() const { return type; }
   inline const uint32_t get_color() const { return color; }
+  inline const uint32_t get_level() const { return level; }
   inline const dice &get_hit() const { return hit; }
   inline const dice &get_damage() const { return damage; }
   inline const dice &get_dodge() const { return dodge; }

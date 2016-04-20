@@ -21,6 +21,7 @@
 #define PC_VISUAL_RANGE        3
 #define NPC_VISUAL_RANGE       20
 #define PC_SPEED               10
+#define SHOP_MAX               5
 #define SAVE_DIR               ".rlg327"
 #define DUNGEON_SAVE_FILE      "dungeon"
 #define DUNGEON_SAVE_SEMANTIC  "RLG327"
@@ -75,6 +76,7 @@ typedef struct dungeon {
   uint8_t pc_tunnel[DUNGEON_Y][DUNGEON_X];
   character *charmap[DUNGEON_Y][DUNGEON_X];
   object *objmap[DUNGEON_Y][DUNGEON_X];
+  object *shop[SHOP_MAX];
   pc *the_pc; /* PC needs to be a pointer, since it is a class */
   heap_t next_turn;
   uint16_t num_monsters;

@@ -6,6 +6,13 @@
 # include "dims.h"
 # include "dungeon.h"
 
+# define PC_HP         1000
+# define PC_MP         1000
+# define PC_START_GOLD 100
+# define PC_MP_POTIONS 1
+# define PC_HP_POTIONS 1
+
+
 # define MAX_INVENTORY 10
 
 typedef struct dungeon dungeon_t;
@@ -55,6 +62,11 @@ class pc : public character {
   unsigned char visible[DUNGEON_Y][DUNGEON_X];
   object *eq[num_eq_slots];
   object *in[MAX_INVENTORY];
+  uint32_t mp;
+  uint32_t hp_potions;
+  uint32_t mana_potions;
+  uint32_t gold;
+  uint32_t level;
 
   uint32_t wear_in(uint32_t slot);
   uint32_t remove_eq(uint32_t slot);

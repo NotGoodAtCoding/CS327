@@ -558,6 +558,8 @@ npc::npc(dungeon_t *d, const monster_description &m)
   speed = m.speed.roll();
   hp = m.hitpoints.roll();
   damage = &m.damage;
+  bounty = (hp + damage->roll()) / 10; //Bounty
+  level = m.level;
   next_turn = d->the_pc->next_turn;
   alive = 1;
   sequence_number = ++d->character_sequence_number;

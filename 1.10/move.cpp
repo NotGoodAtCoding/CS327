@@ -16,19 +16,28 @@
 
 void do_combat(dungeon_t *d, character *atk, character *def)
 {
-  uint32_t damage, i;
-  
-  if (atk != d->the_pc) {
-    damage = atk->damage->roll();
-    io_queue_message("The %s hits you for %d.", atk->name, damage);
-  } else {
-    for (i = damage = 0; i < num_eq_slots; i++) {
-      if (i == eq_slot_weapon && !d->the_pc->eq[i]) {
-        damage += atk->damage->roll();
-      } else if (d->the_pc->eq[i]) {
-        damage += d->the_pc->eq[i]->roll_dice();
-      }
+  uint32_t damage, dodge, armor, i;
+
+  //Calculate Stats
+  for (i = damage = dodge = armor = 0; i < num_eq_slots; i++) {
+    if (i == eq_slot_weapon && !d->the_pc->eq[i]) {
+      damage += atk->damage->roll();
+    } else if (d->the_pc->eq[i]) {
+      damage += d->the_pc->eq[i]->roll_damage();
+      dodge  += d->the_pc->eq[i]->roll_dodge();
+      armor  += d->the_pc->eq[i]->roll_def();
     }
+  }
+
+  if (atk != d->the_pc) {
+    if (rand_range(0, 200) < dodge) {
+      damage = 0;  //Attack dodged
+      io_queue_message("You dodge the %s's attack.", atk->name);
+    } else {
+      damage = atk->damage->roll() * (100 / (100 + armor)); //Take armor reduction
+      io_queue_message("The %s hits you for %d.", atk->name, damage);
+    }
+  } else {
     io_queue_message("You hit the %s for %d.", def->name, damage);
   }
 
@@ -37,7 +46,8 @@ void do_combat(dungeon_t *d, character *atk, character *def)
       io_queue_message("You die.");
       io_queue_message(""); /* Extra message to force pause on "more" prompt */
     } else {
-      io_queue_message("The %s dies.", def->name);
+      io_queue_message("The %s dies. It dropped %d gold.", def->name, def->bounty);
+      d->the_pc->gold += def->bounty;
     }
     def->hp = 0;
     def->alive = 0;
@@ -55,15 +65,15 @@ void move_character(dungeon_t *d, character *c, pair_t next)
   pair_t displacement;
   uint32_t found_cell;
   pair_t order[9] = {
-    { -1, -1 },
-    { -1,  0 },
-    { -1,  1 },
-    {  0, -1 },
-    {  0,  0 },
-    {  0,  1 },
-    {  1, -1 },
-    {  1,  0 },
-    {  1,  1 },
+          { -1, -1 },
+          { -1,  0 },
+          { -1,  1 },
+          {  0, -1 },
+          {  0,  0 },
+          {  0,  1 },
+          {  1, -1 },
+          {  1,  0 },
+          {  1,  1 },
   };
   uint32_t s, i;
 
@@ -146,7 +156,7 @@ void do_moves(dungeon_t *d)
   }
 
   while (pc_is_alive(d) && ((c = ((character *)
-                                  heap_remove_min(&d->next_turn))) != d->the_pc)) {
+          heap_remove_min(&d->next_turn))) != d->the_pc)) {
     if (!character_is_alive(c)) {
       if (d->charmap[character_get_y(c)][character_get_x(c)] == c) {
         d->charmap[character_get_y(c)][character_get_x(c)] = NULL;
@@ -209,12 +219,12 @@ static void new_dungeon_level(dungeon_t *d, uint32_t dir)
    * For now, simply generate a new dungeon.                  */
 
   switch (dir) {
-  case '<':
-  case '>':
-    new_dungeon(d);
-    break;
-  default:
-    break;
+    case '<':
+    case '>':
+      new_dungeon(d);
+          break;
+    default:
+      break;
   }
 }
 
@@ -227,48 +237,50 @@ uint32_t move_pc(dungeon_t *d, uint32_t dir)
   next[dim_x] = character_get_x(d->the_pc);
 
   switch (dir) {
-  case 1:
-  case 2:
-  case 3:
-    next[dim_y]++;
-    break;
-  case 4:
-  case 5:
-  case 6:
-    break;
-  case 7:
-  case 8:
-  case 9:
-    next[dim_y]--;
-    break;
+    case 1:
+    case 2:
+    case 3:
+      next[dim_y]++;
+          break;
+    case 4:
+    case 5:
+    case 6:
+      break;
+    case 7:
+    case 8:
+    case 9:
+      next[dim_y]--;
+          break;
   }
   switch (dir) {
-  case 1:
-  case 4:
-  case 7:
-    next[dim_x]--;
-    break;
-  case 2:
-  case 5:
-  case 8:
-    break;
-  case 3:
-  case 6:
-  case 9:
-    next[dim_x]++;
-    break;
-  case '<':
-    if (mappair(character_get_pos(d->the_pc)) == ter_stairs_up) {
-      was_stairs = 1;
-      new_dungeon_level(d, '<');
-    }
-    break;
-  case '>':
-    if (mappair(character_get_pos(d->the_pc)) == ter_stairs_down) {
-      was_stairs = 1;
-      new_dungeon_level(d, '>');
-    }
-    break;
+    case 1:
+    case 4:
+    case 7:
+      next[dim_x]--;
+          break;
+    case 2:
+    case 5:
+    case 8:
+      break;
+    case 3:
+    case 6:
+    case 9:
+      next[dim_x]++;
+          break;
+    case '<':
+      if (mappair(character_get_pos(d->the_pc)) == ter_stairs_up) {
+        was_stairs = 1;
+        d->the_pc->level++;
+        new_dungeon_level(d, '<');
+      }
+          break;
+    case '>':
+      if (mappair(character_get_pos(d->the_pc)) == ter_stairs_down) {
+        was_stairs = 1;
+        d->the_pc->level++;
+        new_dungeon_level(d, '>');
+      }
+          break;
   }
 
   if (was_stairs) {

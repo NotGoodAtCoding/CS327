@@ -4,16 +4,18 @@
 #include "object.h"
 #include "dungeon.h"
 #include "utils.h"
+#include "pc.h"
 
 object::object(const object_description &o, pair_t p, object *next) :
   name(o.get_name()),
   description(o.get_description()),
   type(o.get_type()),
   color(o.get_color()),
+  level(o.get_level()),
   damage(o.get_damage()),
+  dodge(o.get_dodge()),
+  defence(o.get_defence()),
   hit(o.get_hit().roll()),
-  dodge(o.get_dodge().roll()),
-  defence(o.get_defence().roll()),
   weight(o.get_weight().roll()),
   speed(o.get_speed().roll()),
   attribute(o.get_attribute().roll()),
@@ -34,11 +36,18 @@ object::~object()
 
 void gen_object(dungeon_t *d)
 {
-  object *o;
+  object *o, *shop_inv;
   uint32_t room;
   pair_t p;
   const std::vector<object_description> &v = d->object_descriptions;
-  const object_description &od = v[rand_range(0, v.size() - 1)];
+  //Level control for items placed
+  unsigned long select = rand_range(0, v.size() - 1);
+  while (v[select].get_level() > d->the_pc->level +1){
+    select = rand_range(0, v.size() - 1);
+  }
+  const object_description &od = v[select];
+  //Level control for shop items is simply the prohibitive cost
+  const object_description &shop = v[rand_range(0, v.size() - 1)];
 
   room = rand_range(0, d->num_rooms - 1);
   p[dim_y] = rand_range(d->rooms[room].position[dim_y],
@@ -49,8 +58,10 @@ void gen_object(dungeon_t *d)
                          d->rooms[room].size[dim_x] - 1));
 
   o = new object(od, p, d->objmap[p[dim_y]][p[dim_x]]);
+  shop_inv = new object(shop, p, d->shop[p[dim_x] % SHOP_MAX]);
 
-  d->objmap[p[dim_y]][p[dim_x]] = o;  
+  d->objmap[p[dim_y]][p[dim_x]] = o;
+  d->shop[p[dim_x] % SHOP_MAX]  = shop_inv;
 }
 
 void gen_objects(dungeon_t *d, uint32_t numobj)
@@ -58,11 +69,13 @@ void gen_objects(dungeon_t *d, uint32_t numobj)
   uint32_t i;
 
   memset(d->objmap, 0, sizeof (d->objmap));
+  memset(d->shop,   0, sizeof(d->shop));
 
   d->num_objects = numobj;
   for (i = 0; i < numobj; i++) {
     gen_object(d);
   }
+
 }
 
 char object::get_symbol()
@@ -75,6 +88,11 @@ uint32_t object::get_color()
   return color;
 }
 
+uint32_t object::get_level()
+{
+  return level;
+}
+
 const char *object::get_name()
 {
   return name.c_str();
@@ -85,9 +103,19 @@ int32_t object::get_speed()
   return speed;
 }
 
-int32_t object::roll_dice()
+int32_t object::roll_damage()
 {
   return damage.roll();
+}
+
+int32_t object::roll_dodge()
+{
+  return dodge.roll();
+}
+
+int32_t object::roll_def()
+{
+  return defence.roll();
 }
 
 void destroy_objects(dungeon_t *d)
