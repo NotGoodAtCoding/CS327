@@ -1,0 +1,20 @@
+ChangeLog
+
+Added functions from ZHANG YUXIANG 's assignment 1.09 solution
+  HP Bar, MP Bar, Spells (NOT REGEN - this isn't COD)
+
+Added "Level" system - Enemies and objects spawn change depends on
+  how many levels of the dungeon you have completed
+
+Added Shop and economy
+  Shop ($) now appears with random items, hp potions and mp potions
+  Shopkeeper is very stingy, and scottish(?)
+  Bought items appear on the ground beneah the pc
+
+Added DODGE and DEF ratings to the combat considerations
+  DODGE has a (value / 100 ) chance of ignoring all damage
+  DEF affects incoming DAMAGE by the MULTIPLIER (100 / (100 + DEF))
+    0   DEF -> 100% incoming damage
+	50  DEF -> 66%  incoming damage
+	100 DEF -> 50%  incoming damage
+	200 DEF -> 33%  incoming damage
