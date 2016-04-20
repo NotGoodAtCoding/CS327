@@ -1246,10 +1246,12 @@ int io_print_shop(dungeon_t *d) {
 
         if (key == 'm' && d->the_pc->gold >= 50) {
             d->the_pc->gold -= 50;
+            d->the_pc->mana_potions++;
             mvprintw(18, 10, " %-58s ", "YER A WIZARD, HARRY?");
             continue;
         } else if (key == 'h' && d->the_pc->gold >= 100) {
             d->the_pc->gold -= 100;
+            d->the_pc->hp_potions++;
             mvprintw(18, 10, " %-58s ", "AHH HEALTH, GOOD STUFF!");
             continue;
         } else if (!d->shop[key - '0']) {
