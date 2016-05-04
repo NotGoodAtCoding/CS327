@@ -1,0 +1,96 @@
+Lecture 10
+
+* representation of char
+* Bitfields
+  Allow us to store boolean values using only one bit.  An array of 
+  booleans in a single primitive type.
+  Remember that hex is shorthand for binary, so 
+  0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 ==
+  00000001, 00000010, 00000100, 00001000, 00010000, 00100000, 01000000, 10000000
+  Every one of these values is a power of two; we're selecting one bit at
+  a time.  Continuing with the monster characteristics example, and adding
+  a few more, consider:
+    # define NPC_SMART         0x00000001 /* Monster is smart (can path find) */
+    # define NPC_TELEPATH      0x00000002 /* Monster is telepathic            */
+    # define NPC_INVIS         0x00000004 /* Monster is invisible             */
+    # define NPC_NOSLEEP       0x00000008 /* Monster cannot be put to sleep   */
+    # define NPC_RFIRE         0x00000010 /* Monster resists fire attacks     */
+    # define NPC_RCOLD         0x00000020 /* Monster resists ice attacks      */
+    # define NPC_RELEC         0x00000040 /* Monster resists electric attacks */
+    # define NPC_RPOISON       0x00000080 /* Monster resists poison attacks   */
+  If we want to test if a monster resists any of fire, cold, and electricity,
+  we'd use the test:
+    if (characteristics & (NPC_RFIRE | NPC_RCOLD | NPC_RELEC))
+      do_something();
+  To check if a monster is all of smart, telepathic, and invisible:
+    if ((characteristics & (NPC_SMART | NPC_TELEPATH | NPC_INVIS)) ==
+        (NPC_SMART | NPC_TELEPATH | NPC_INVIS)) {
+      do_something_else();
+    }
+  To check that a monster does not resist poison:
+    if (!(characteristics & NPC_POISON)) {
+      do_another_thing();
+    }
+* The C Preprocessor
+** define
+   defines a macro
+   #define <name> [<value>]
+   Defines the symbol <name> as a valid symbol in your program.
+   If <value> is set, name get the value <value>; Instances of <name> are
+   literally replaced with the value <value> by the preprocessor
+** ifdef
+   #ifdef <name>
+   tests if <name> is defined as a macro
+** ifndef
+   Opposite of ifdef; tests if <name> is not defined
+** else
+   #else starts an else block
+** elif
+   else if
+** endif
+   ends an if directive
+** undef
+   #undef <name>
+   Undefines <name>
+** Conditional compilation
+   
+
+
+*** Guards
+** include
+** More on define -- macros
+*** value type
+*** function type
+*** concatenation
+*** stringification
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* Reading type declarations
+** "Go right when you can.  Go left when you must."
+

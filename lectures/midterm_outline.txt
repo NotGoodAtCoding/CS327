@@ -1,0 +1,22 @@
+* The four stages of compilation
+* Declarations--variables and functions, storage class specifiers (const,
+  volatile, etc.)
+* Arrays
+* Pointers, pointer arithmetic, and NULL
+* sizeof operator
+* Dynamic allocation
+* The equivalence of pointers and arrays
+* typedef
+* Structs, enums, unions
+* C strings
+* File I/O
+* Hexadecimal notation
+* Endianness
+* Bitwise operations and bitfields
+* Preprocessing--#include, #define, #ifdef, #ifndef, etc., guards, macros,
+  stringification and concatenation
+* void * and generics
+* Function pointers and jump tables
+* goto
+* The stack and the heap
+* Variadic functions and macros

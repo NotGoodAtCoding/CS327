@@ -1,0 +1,47 @@
+Lecture 27
+
+* More useful C++ STL stuff
+** Containers
+*** vector
+    Similar to Java ArrayLists.
+    Built in an array with dynamic resize.
+    add is O(1) when this is space.  O(n) when we need to double.  Amortized
+    O(1).  O(1) indexing, O(n) insert at arbitrary index.  Array semantics.
+*** list
+    Doubly linked
+    O(1) insert both ends, O(n) indexing
+*** stack
+    Implemented on a double-ended queue
+    Constant time performance on stack operations
+*** queue
+    Also implemented on a double-ended queue
+    Constant time performance on queue operations
+*** set
+    Contains unique elements in order
+    Implemented on binary search trees. (just about) everything is O(lg n)
+*** map
+    Associative array.  Stores key/value pairs.
+    Also implemented on BSTs, so you get BST performance characteristics
+* Inheritance
+  Can inherit three different ways:
+    public
+    protected
+    private
+** virtual functions
+** pure virtual functions
+** casts
+   syntax (same for all 4):
+   dynamic_cast<type to cast to>(thing that you want to cast)
+*** dynamic_cast
+    Runtime cast
+    allows only casts between objects of related (polymorphic) types
+    returns NULL if the cast is invalid and a valid pointer if the cast
+    is good
+*** static_cast
+    allows only casts between objects of related (polymorphic) types
+*** reinterpret_cast
+    cast anything to any other thing
+*** const_cast
+    Let's you cast const items to non-const and vice versa
+** typeid
+   runtime type checking

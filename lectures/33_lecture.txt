@@ -1,0 +1,27 @@
+Lecture 33-34
+
+* Design Patterns
+** Visitor Pattern
+*** Based on the notion of double dispatch.
+    Static dispatch is what occurs when the function to call is known at
+    compile time ("static" == compile time).
+    "Normal" function calls, as in C, are all statically dispatched.
+    Overloaded functions in C++ are also dispatched statically; choosing the
+    right function is done by examining the types of the arguments.
+    Single dispatch or dynamic dispatch is done at runtime (dynamic == runtime).
+    This is a necessary feature for true polymorphism.  The type of the 
+    calling object cannot be determined statically (at compile time) because
+    the runtime type of the object is unknown, so the compiler cannot set up
+    the call.  Instead, the runtime dynamically determines which method to
+    call.
+    Double dispatch is dynamic dispatch with the method determination based
+    on the runtime types of two objects.  C++ does not directly support
+    double dispatch, but it can be simulated with two single dispatch calls.
+    See double_dispatch.cpp.
+*** The visitor pattern allows (simulated) double dispatch throughout a data
+    heirarchy.  Attached archive gives a (not too terrible contrived)
+    example.  The visitor object can implement any desired functionality on
+    objects of all of visitable types.  Double dispatch is based on the type
+    of the visitor and the type of the visited object.
+** Decorator Pattern
+   

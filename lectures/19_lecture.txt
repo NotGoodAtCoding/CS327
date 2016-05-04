@@ -1,0 +1,49 @@
+Lecture 19
+* Exam prep material
+* Office hours
+* C++
+** Created by Bjarne Stroustrup in the early 80s.
+   He was working on a discrete event simulator, wanted an object oriented
+   language, but also wanted speed.
+   Originally known as "C with classes".
+** Philosophy
+   Retain as much of C as possible
+   Strengthen type checking
+   Add new features to make programming higher level
+     References
+     Classes
+     Templates
+     Exceptions
+     Namespaces
+     Function and operator overloading
+     I/O changes
+** Things you'll (probably) like
+   C++ has bool
+   // comments
+   Variables can be defined anywhere
+   Exceptions
+   Objects
+   Function-style casts (and some runtime casts)
+     C style: (int) i
+     C++ style: int(i)
+   Semantic change in struct definitions
+     structs also have public, private, and protected fields
+     One is true bby default (public?  will verify)
+** Things you (probably) won't like
+   Things require casts that didn't before
+   Lots of finicky error messages
+** Things that aren't part of C++
+   New data types (like string)
+   Bounds checking
+   Garbage collection
+     But it has features that let you implement some of these things
+
+Picking up here next time:
+
+** Other differences
+   C++ standard header files don't have a ".h" extension
+   File extensions
+   Compile with g++
+** I/O
+   iostream
+   fstream

@@ -1,0 +1,116 @@
+Lecture 15
+
+* Declarations
+** Scope and lifetime
+   Scope - Where in a program a variable is accessible
+   Lifetime - when in a program a variable exists
+** Keywords that alter declaration semantics
+*** auto
+    This is the default for variables defined in functions, so you very
+    rarely see it used explicitly.  Variable's scope is restricted to the 
+    function in which it is declared.  Lifetime is the same as that of the
+    function. 
+*** const
+    Makes the variable immutable.  Doesn't affect scope or lifetime.
+    Some compilers will put the variable in the text segment, which means
+    that it's actual lifetime would be equal to that of the program; however,
+    it would be an error to depend on this.
+*** extern
+    Means that the storage for the variable is created elsewhere; used to
+    export data to other compilation units.  It only makes sense to use an
+    external declaration for variables in global scope.
+*** static
+    In a function, changes the variables lifetime to be the lifetime of the
+    program.  Scope is unaffected.
+    On globals, prevents variable or function from being exported from the
+    compilation unit.  This is useful for internal functions of an ADT.
+    Think "private".
+*** register
+    The compiler will try to put the variable in a register
+
+    volatile int i = 1;
+    while (i)
+      ;
+
+*** volatile
+    Tells the compiler that this value could change outside of the control of
+    normal program flow.
+*** inline
+    Similar to function-type macros.  Puts function body inside caller
+    without function call.
+* Reading and understand declarations: The "right-left" rule
+  Go right when you can; go left when you must.
+
+int i;                  int
+int *p;                 pointer to an int
+int a[];                array of int
+int f();                function that returns int
+int **pp;               pointer to pointer to int
+int (*pa)[];            pointer to an array of int
+int (*pf)();            pointer to function that returns int
+int *ap[];              array of pointer to int
+int aa[][];             array of array of int (not actually legal)
+int af[]();             array of functions that return int (not legal)
+int *fp();              function that returns pointer to int
+int fa()[];             function of array that return int (not legal)
+int ff()();             function of function that return int (not legal)
+                        
+int ***ppp;             pointer to pointer to pointer to int
+int (**ppa)[];          pointer to pointer to array of int
+int (**ppf)();          pointer to pointer to function that returns int
+int *(*pap)[];          pointer to array of pointer to int
+int (*paa)[][];         pointer to array of array of int (not legal)
+int (*paf)[]();         pointer to array of function that return int (not legal)
+                        
+int *(*pfp)();          pointer to function that returns pointer to int
+int (*pfa)()[];         
+                        
+int (*pff)()();         
+                        
+int **app[];            
+int (*apa[])[];         
+int (*apf[])();         
+int *aap[][];           
+int aaa[][][];          
+int aaf[][]();          
+                        
+int *afp[]();           
+int afa[]()[];          array of function of array of int (not legal)
+                        
+int aff[]()();          
+                        
+int **fpp();            
+int (*fpa())[];         
+int (*fpf())();         
+                        
+int *fap()[];           
+int faa()[][];          function of array of array of int (not legal)
+                        
+int faf()[]();          
+                        
+int *ffp()();           
+                        
+* Goto
+** "Go To Statement Considered Harmful" by Edsgar Dijkstra, 1968
+** "Structured Programming with go to Statements" by Don Knuth, 1974
+
+Generally, do not use.
+Specifically, useful for de-inits
+
+* Common command-line switches
+** -g : debugging
+** -c : partial compilation
+** -o : names the output file
+** -Wall (and -Werror) : -Wall turns on all warnings, -Werror treats warnings
+                          as Werrors
+** -O : optimize, there are levels (1-3)
+** -D : define a symbol in the preprocessor
+** -I : add to the include path
+** -L : adds to the library path
+** -l : names a library to link in 
+** To help with makefiles: -MMD -MF : Automatically generate dependencies
+** For profiling: -pg : Instrument with profiling information
+** To be annoying: -ansi : Enforce ANSI C89
+** To be *really* annoying: -pedantic : Strictly enforce ANSI C89
+
+

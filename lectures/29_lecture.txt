@@ -1,0 +1,25 @@
+Lecture 29
+
+* <algorithm>
+  The algorithm header contains template implementations of many common
+  algorithms that you might want to use on items in a container.  These
+  implementations work on any container, so long as the container implements
+  the appropriate iterators and the contained objects implement the necessary
+  operations.
+** min, max, minmax (C++11)
+   min() and max() work as you expect, take a pair of iterators marking the
+   range that you want to search.
+   minmax() has a clever algorithm that can find both min and max with 3n/2
+   operations: Compare pairs, then compare smaller to min and larger to max.
+** sort
+   Sorts objects between two iterators according to < or an optional comparitor
+** find
+   Finds an item between two iterators according to ==
+** find_if
+   Finds an item between two iterators according to a predicate.  Predicate
+   can be a function pointer or a function object.
+*** "function objects"
+    Objects that overload operator().  An instance of such objects can be
+    "called" by applying the operator.  Example in algo.cpp.
+
+More next time...

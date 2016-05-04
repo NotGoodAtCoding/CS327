@@ -1,0 +1,52 @@
+Lecture 13
+
+* Doing generics is C.
+  Needs function pointers
+  How do we declare one?
+    <return type> (*<function name>)(<argument list>)
+  And how do we assign to a function pointer?
+    Assign a function name with no parenthesis
+** sort
+void insertion_sort(int *a, int n)
+{
+  int i, j, t;
+
+  for (i = 1; i < n; i++) {
+    for (t = a[i], j = i - 1; j > -1 && a[j] > t; j--) {
+      a[j + 1] = a[j];
+    }
+    a[j + 1] = t;
+  }
+}
+
+
+   Use qsort()
+   See generic_sort.c for a generic implementation of insertion sort and a
+   usage example for qsort().
+
+** search
+   bsearch()
+   Works just like qsort, but instead of sorting, it does a binary search.
+   For both bsearch() and qsort(), see the man pages for more info.
+
+** ADTs
+   Abstract Data Type - A set of data and operations on that data.
+   Classes as in Java, C++ and others are ADTs, but ADTs are not necessarily
+   classes.
+   You can approach very close to object-oriented programming in C.
+   Attached a set of data strutures ADTs in C.  Look at them for examples of 
+   many of the concepts we've talked about: memory management, generic
+   functionalaity, function pointers, macros, etc.
+   I've also got a fibonacci heap ADT, but I won't release that to you until
+   after the current assignment is due.
+
+   I make no promises about this code.  Some of it hasn't been dusted off in
+   years.  Since most of my programming is system-level, performance is
+   paramount, and I'll write a faster, custom data structure when I need it,
+   rather than use these generic ones.  It's only when performance is
+   secondary that I'll pull these out.  There are functions that aren't fully
+   implemented (because I started, then didn't need them) or look fully
+   implemented but aren't tested (for the same reason), so while it's safe to
+   assume that the "common" functionality works (I have used these a lot!),
+   some of the more specialized functions may have bugs.
+

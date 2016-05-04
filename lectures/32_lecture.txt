@@ -1,0 +1,64 @@
+Lecture 32
+
+* Design Patterns
+** The Singleton Pattern
+   Used to ensure that no more than one instance of a class may exist
+   Requires private constructor, copy constructor and assignment operator
+     Otherwise the compiler will automatically create public default methods
+   Static instance pointer within class definition
+   Static method to get the instance (of create it if it's still NULL)
+
+** The Observer Pattern
+   Used when you need to notify a number of "observers" of a state state
+   change.  Obvious solution involves manually doing each update when the
+   monitored information changes, for example:
+
+   class speedometer {
+     int speed, oldspeed;
+     update_speed() {
+       if (speed != old_speed) {
+         trip.update_speed(speed);
+         dashboard.update_speed(speed);
+         wheels.update_speed(speed);
+         stats.update_speed(speed);
+         ...
+       }
+     }
+
+  The Observer pattern implements a method to register observers, so it's
+  impossible to forget an observer.
+
+   class speedometer {
+     int speed, oldspeed;
+     std::list<observer *> observers;
+     update_speed() {
+       if (speed != old_speed) {
+         trip.update_speed(speed);
+         dashboard.update_speed(speed);
+         wheels.update_speed(speed);
+         stats.update_speed(speed);
+         ...
+       }
+     }
+
+  update_speed() {
+    if (speed != old_speed) {
+      foreach observer
+        callback->update(speed);
+    }
+  }
+
+  register_observer(observer *o)
+  {
+    observers.push_back(o);
+  }
+
+
+  unregister_observer(observer *o)
+  {
+
+    it = find(o in observers);
+    observers.remove(it);
+  }
+
+  

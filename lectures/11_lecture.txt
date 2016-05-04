@@ -1,0 +1,82 @@
+Lecture 11
+
+* The C Preprocessor
+** Preprocessor directives
+*** define
+    #define <name> [<value>]
+*** ifdef
+    #ifdef <name>
+*** ifndef
+    Opposite of ifdef; tests if <name> is not defined
+*** else
+    #else starts an else block
+*** elif
+    else if
+*** endif
+    ends an if directive
+*** undef
+    #undef <name>
+*** Conditional compilation
+    Preprocessor determines what code to send to the compiler.
+** Guards
+   Something we put in a header file to insure it isn't included more than
+   once.
+   At the beginning of the file, we'll put
+     #ifndef FILE_H
+     # define FILE_H
+       /* code goes in here */
+       /* and at the end of the file... */
+     #endif
+
+** More on define -- macros
+   #define creates macros
+   macros are replaced into code verbatim by the preprocessor, so
+     #define value 5
+   Replaces all instances of "value" in the source with the literral "5"
+*** value type
+    Replaces a macro name with a single, literal value
+*** function type
+    Looks sort-of like a function
+    Has parentheses and takes arguments
+      #define print(x) printf("%d", x)
+*** concatenation
+*** stringification
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* Reading type declarations
+** "Go right when you can.  Go left when you must."
+

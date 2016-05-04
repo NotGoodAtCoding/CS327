@@ -1,0 +1,133 @@
+Useful or interesting C hacks
+
+* Macros that conditionally generate code for debugging
+
+#ifdef DEBUG
+# define D(x) x
+#else
+# define D(x)
+#endif
+
+D(printf(...));
+
+* Macros that print variable names in addition to values
+
+#define print_variable(i) printf(#i " = %d\n", i)
+
+* Pre-defined macros
+
+__FILE__
+__LINE__
+__FUNCTION__
+__PRETTY_FUNCTION__
+
+* Variable array in struct trick
+
+struct variable_array {
+  //fields
+  //more fields
+  //...
+  int a[1];
+}
+
+struct variable_array *v = malloc(sizeof(*v) + n);
+v->a[x]; //where x > 1
+
+* Array indexing
+  char *s = "CS327";
+  printf("%c\n", s[1]);  -> 1[s]
+  printf("%c\n", "CS327"[1]); /* Don't ever do this */
+  printf("%c\n", 1["CS327"]); /* Really don't ever do this! */
+
+  v[n]
+  v + n == n + v -> n[v]
+
+
+* Pointers to constants
+** Cannonical example is setsockopt(2)
+   int opt = 1;
+   setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof (int));
+   setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (int []) { 1 }, sizeof (int));
+
+
+* Another way to do variadic functions
+/* This one is dirty.  Don't do it. */
+
+void variadic_function(int *argv)
+{
+  while (*argv) {
+    //do something with *argv
+    argv++;
+  }
+}
+
+variadic_function((int []) { 1, 5, 4, 6, 8, 0 })
+
+* Linked list hack
+#define cons(car, cdr) (struct list[]){{car, cdr}}
+struct list {
+  int value;
+  struct list *next;
+};
+
+struct list *l = cons(1, cons(2, cons(3, cons(4, NULL))));
+
+while (l) {
+  printf("%d\n", l->value);
+  l = l->next;
+}
+
+
+* Duff's Device
+** Does loop unrolling
+*** Before:
+
+	send(to, from, count)
+	register short *to, *from;
+	register count;
+	{
+		do
+			*to = *from++;
+		while(--count>0);
+	}
+
+*** After:
+	send(to, from, count)
+	register short *to, *from;
+	register count;
+	{
+		register n=(count+7)/8;
+		switch(count%8){
+		case 0:	do{	*to = *from++;
+		case 7:		*to = *from++;
+		case 6:		*to = *from++;
+		case 5:		*to = *from++;
+		case 4:		*to = *from++;
+		case 3:		*to = *from++;
+		case 2:		*to = *from++;
+		case 1:		*to = *from++;
+			}while(--n>0);
+		}
+	}
+
+* Coroutines
+
+* Carmack's reciprocal square root
+
+float Q_rsqrt( float number )
+{
+  long i;
+  float x2, y;
+  const float threehalfs = 1.5F;
+
+  x2 = number * 0.5F;
+  y  = number;
+  i  = * ( long * ) &y;                       // evil floating point bit level hacking
+  i  = 0x5f3759df - ( i >> 1 );               // what the f*ck? 
+  y  = * ( float * ) &i;
+  y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
+//  y  = y * ( threehalfs - ( x2 * y * y ) ); // 2nd iteration, this can be removed
+
+	return y;
+}
+

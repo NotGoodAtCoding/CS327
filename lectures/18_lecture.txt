@@ -1,0 +1,62 @@
+Lecture 18
+
+* Controlling a terminal
+** Primitive "terminal control" with carriage return
+   whatsit.c
+** ANSI Escape Sequences allow you to completely control the terminal
+   whatsitansi.c
+   http://ascii-table.com/ansi-escape-sequences.php
+** Curses (very punny name, "cursor optimization") abstract the terminal 
+   from the programmer
+   We'll use Ncurses (new curses)
+   To get data types: #include <ncurses.h>
+   To link in library: -lncurses
+*** Initialization:
+    WINDOW *initscr(void)
+      Initializes the terminal
+    int raw(void)
+      Turns off buffered I/O
+      We can read one byte at a time, no need to wait for user to hit enter
+    int noecho(void)
+      Doesn't echo input to the terminal
+    int curs_set(int visibility)
+      Make cursor invisible with visibility of 0
+    int keypad(WINDOW *win, bool bf)
+      Turns on the keypad
+
+    My solution to 1.05 uses:
+
+    void io_init_terminal(void)
+    {
+      initscr();
+      raw();
+      noecho();
+      curs_set(0);
+      keypad(stdscr, TRUE);
+    }
+
+*** Deinitialization
+    int endwin(void)
+      Returns resourses to the system
+    If your program crashes and corrupts the terminal: run the "reset" command
+
+*** Reading input
+    int getch(void)
+      Read a single character
+      blocking call
+
+*** Displaying
+    int clear(void)
+      Before redrawing, use this
+    int mvaddch(int y, int x, const chtype ch)
+      Move cursor to (y, x) and write ch
+    int refresh(void)
+      Redraw the terminal
+*** Other I/O
+    See chrs_addch(3), curs_printw(3), curs_getch(3) and curs_scanw(3)
+*** More info
+    Fairly comprehensive coverage in curses(3), including a list of all curses
+    functions.
+    Lots of curses tutorials and quick-start guides on the web.
+    Check out ncurses.h (in /usr/include/ncurses.h on pyrite).  
+

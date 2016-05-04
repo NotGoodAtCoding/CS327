@@ -1,0 +1,43 @@
+===============
+     DEBUG     
+===============
+
+seed: 1460552506
+save path: (null)
+load path: (null)
+
+generating new dungeon...
+
+generating monsters...
+
+place NPC z
+place NPC z
+place NPC z
+place NPC s
+place NPC C
+place NPC B
+place NPC z
+place NPC z
+place NPC B
+place NPC p
+
+monsters generated.
+
+generating objects...
+
+place item |
+place item )
+place item _
+place item |
+place item =
+place item [
+place item \
+place item ]
+place item =
+place item _
+
+objects generated.
+
+dungeon printing...
+dungoen printed.
+

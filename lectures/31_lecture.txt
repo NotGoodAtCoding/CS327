@@ -1,0 +1,52 @@
+Lecture 31
+
+* <algorithm>
+  The algorithm header contains template implementations of many common
+  algorithms that you might want to use on items in a container.  These
+  implementations work on any container, so long as the container implements
+  the appropriate iterators and the contained objects implement the necessary
+  operations.
+** min, max, minmax (C++11)
+   min() and max() work as you expect, take a pair of iterators marking the
+   range that you want to search.
+   minmax() has a clever algorithm that can find both min and max with 3n/2
+   operations: Compare pairs, then compare smaller to min and larger to max.
+** sort
+   Sorts objects between two iterators according to < or an optional comparitor
+** find
+   Finds an item between two iterators according to ==
+** find_if
+   Finds an item between two iterators according to a predicate.  Predicate
+   can be a function pointer or a function object.
+*** "function objects"
+    Objects that overload operator().  An instance of such objects can be
+    "called" by applying the operator.  Example in algo.cpp.
+** for_each
+   Calls the function (or function-like object) on each element of the container
+** copy
+   Copies elements from the input to the output
+** transform
+   Copies from the input to the output with a transform calculated by calling
+   the function argument on the input item
+** generate
+   Assigns the return value of the function to each respective element of the
+   input.
+** random_shuffle
+   Randomly swaps items in the array
+*** strfry and memfrob
+    C functions similar to random_shuffle().  strfry() randomizes a C string,
+    and memfrob() xors bytes with 42
+** make_heap
+   heapifies a container
+** push_heap
+   Adds a new item to a heap
+** pop_heap
+   removes the first item from a heap
+* Design Patterns
+** The Singleton Pattern
+   Used to ensure that no more than one instance of a class may exist
+   Must make private constructor, copy constructor, and assignment operator
+   Static instance pointer in class definition
+   Static method to create that instance (new object); returns the pointer
+   to the instance
+

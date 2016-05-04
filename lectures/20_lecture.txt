@@ -1,0 +1,34 @@
+Lecture 20
+
+* C++
+** Other differences from C
+   C++ standard header files don't have a ".h" extension
+   File extensions
+   .cc, .cpp, .cxx, .c++, .C
+   Compile with g++
+   hello world...
+** const
+   C has const, but it's not used very much
+   C++ uses it extensively
+   Syntatically identical, but semantically different
+
+   const int *p;        /* The addressed data cannot be changed   */
+   int * const p;       /* The pointer variable cannot be changed */
+   const int * const p; /* Neither can be changed                 */
+
+   /* Suppose this is global: */
+   const int i = 50;
+   int a[i];
+
+   const program...
+** References
+   int &r = i;
+   After the above line, i and r are aliases
+   must be assigned at the time they are created
+   By convention, when changing a value inside a function, pass by address
+   when not changing, pass by constant reference.
+   swap program...
+   functions can return references
+** I/O
+   iostream
+   fstream

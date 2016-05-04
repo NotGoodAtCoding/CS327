@@ -1,0 +1,198 @@
+Lecture 36
+
+* GUI Programming.
+  There are lots of options for GUI libraries.  Two popular, cross platform
+  ones are Qt and GTK+.  I've chosen GTK+ because Qt didn't work.
+
+  All demo code from: https://developer.gnome.org/gtk-tutorial/stable/book1.html
+
+** Complex set of include paths and libraries.  Sidestep this issue by using
+   a tool:
+     pkg-config --cflags --libs gtk+-2.0
+** Simplest GTK program:
+
+   int main( int   argc,
+             char *argv[] )
+   {
+       GtkWidget *window;
+    
+       gtk_init (&argc, &argv);
+    
+       window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+       gtk_widget_show  (window);
+    
+       gtk_main ();
+    
+       return 0;
+   }
+
+   gtk1.c
+** More complex program.
+   gtk2.c
+*** Register callbacks (,"signal handlers") with:
+
+    gulong g_signal_connect( gpointer object,
+                             const gchar *name,
+                             GCallback func,
+                             gpointer func_data );
+
+    Can unregister with:
+
+    void g_signal_handler_disconnect( gpointer object,
+                                      gulong   id );
+
+** Adding to the last program...
+   gtk3.c
+*** Packing
+    gtk4.c
+    Have horizontal, vertical, start-to-end, and end-to-start
+
+    GtkWidget *gtk_hbox_new ( gboolean homogeneous,
+                              gint     spacing );
+    GtkWidget *gtk_vbox_new ( gboolean homogeneous,
+                              gint     spacing );
+
+    void gtk_box_pack_start( GtkBox    *box,
+                             GtkWidget *child,
+                             gboolean   expand,
+                             gboolean   fill,
+                             guint      padding );
+
+    Can also pack in tables:
+    gtk5.c
+
+    void gtk_table_attach( GtkTable         *table,
+                           GtkWidget        *child,
+                           guint            left_attach,
+                           guint            right_attach,
+                           guint            top_attach,
+                           guint            bottom_attach,
+                           GtkAttachOptions xoptions,
+                           GtkAttachOptions yoptions,
+                           guint            xpadding,
+                           guint            ypadding );
+
+     0          1          2
+    0+----------+----------+
+     |          |          |
+    1+----------+----------+
+     |          |          |
+    2+----------+----------+
+
+** Widget heirarchy
+
+   GObject
+    |  
+    GtkObject
+     +GtkWidget
+     | +GtkMisc
+     | | +GtkLabel
+     | | | `GtkAccelLabel
+     | | +GtkArrow
+     | | `GtkImage
+     | +GtkContainer
+     | | +GtkBin
+     | | | +GtkAlignment
+     | | | +GtkFrame
+     | | | | `GtkAspectFrame
+     | | | +GtkButton
+     | | | | +GtkToggleButton
+     | | | | | `GtkCheckButton
+     | | | | |   `GtkRadioButton
+     | | | | `GtkOptionMenu
+     | | | +GtkItem
+     | | | | +GtkMenuItem
+     | | | |   +GtkCheckMenuItem
+     | | | |   | `GtkRadioMenuItem
+     | | | |   +GtkImageMenuItem
+     | | | |   +GtkSeparatorMenuItem
+     | | | |   `GtkTearoffMenuItem
+     | | | +GtkWindow
+     | | | | +GtkDialog
+     | | | | | +GtkColorSelectionDialog
+     | | | | | +GtkFileSelection
+     | | | | | +GtkFontSelectionDialog
+     | | | | | +GtkInputDialog
+     | | | | | `GtkMessageDialog
+     | | | | `GtkPlug
+     | | | +GtkEventBox
+     | | | +GtkHandleBox
+     | | | +GtkScrolledWindow
+     | | | `GtkViewport
+     | | +GtkBox
+     | | | +GtkButtonBox
+     | | | | +GtkHButtonBox
+     | | | | `GtkVButtonBox
+     | | | +GtkVBox
+     | | | | +GtkColorSelection
+     | | | | +GtkFontSelection
+     | | | | `GtkGammaCurve
+     | | | `GtkHBox
+     | | |   +GtkCombo
+     | | |   `GtkStatusbar
+     | | +GtkFixed
+     | | +GtkPaned
+     | | | +GtkHPaned
+     | | | `GtkVPaned
+     | | +GtkLayout
+     | | +GtkMenuShell
+     | | | +GtkMenuBar
+     | | | `GtkMenu
+     | | +GtkNotebook
+     | | +GtkSocket
+     | | +GtkTable
+     | | +GtkTextView
+     | | +GtkToolbar
+     | | `GtkTreeView
+     | +GtkCalendar
+     | +GtkDrawingArea
+     | | `GtkCurve
+     | +GtkEditable
+     | | +GtkEntry
+     | |   `GtkSpinButton
+     | +GtkRuler
+     | | +GtkHRuler
+     | | `GtkVRuler
+     | +GtkRange
+     | | +GtkScale
+     | | | +GtkHScale
+     | | | `GtkVScale
+     | | `GtkScrollbar
+     | |   +GtkHScrollbar
+     | |   `GtkVScrollbar
+     | +GtkSeparator
+     | | +GtkHSeparator
+     | | `GtkVSeparator
+     | +GtkInvisible
+     | +GtkPreview
+     | `GtkProgressBar
+     +GtkAdjustment
+     +GtkCellRenderer
+     | +GtkCellRendererPixbuf
+     | +GtkCellRendererText
+     | +GtkCellRendererToggle
+     +GtkItemFactory
+     +GtkTooltips
+     `GtkTreeViewColumn
+
+*** Radio button example
+    gtk6.c
+*** Sliders
+    gtk7.c
+** Menus
+*** Manually
+    gtk8.c
+*** Automatically
+    gtk9.c
+** Calling a function periodically
+   gint g_timeout_add (guint32     interval,
+                       GtkFunction function,
+                       gpointer    data);
+** Monitoring for input
+   gint gdk_input_add( gint              source,
+                       GdkInputCondition condition,
+                       GdkInputFunction  function,
+                       gpointer          data );
+** "Busy work"
+   gint gtk_idle_add( GtkFunction function,
+                      gpointer    data );

@@ -1,0 +1,105 @@
+Lecture 09
+
+* Representation of primitive types
+** Unsigned have all bits binary place value
+   This is place value just like you learned in elementary school (remember
+   1's place, 10's place, 100's place...?) except that in binary, the places
+   correspond with powers of 2 (1's place, 2's place, 4's place, 8's
+   place...).
+   If we use b0 to denote the least significant bit and bn the most
+   significant bit, then we can use the following summation:
+
+     _n__
+     \
+      \   b x 2^p
+      /
+     /___
+     p=0
+
+  Rendered in lovely ASCII!
+
+                           /(|
+                          (  :
+                         __\  \  _____
+                       (____)  `|
+                      (____)|   |
+                       (____).__|
+                        (___)__.|_____
+
+** Signed integers stored as two's complement
+   Take complement and add 1
+   Take the compliment means "flip all the bits", then add binary 1 to the 
+   result.
+   From the above, we have 32-bit 3 (grouped for readability) ==
+     0000 0000 0000 0000 0000 0000 0000 0011
+   Compliment it:
+     1111 1111 1111 1111 1111 1111 1111 1100
+   and add 1
+     1111 1111 1111 1111 1111 1111 1111 1101
+   gives the two's compliment -3.
+   Easy to add.  Nothing special, just add the bits and throw away the carry
+   overflow (if it occurs).
+     0000 0000 0000 0000 0000 0000 0000 0011
+     1111 1111 1111 1111 1111 1111 1111 1101 +
+     ---------------------------------------
+     0000 0000 0000 0000 0000 0000 0000 0000
+   Also easy to recognize negatives.  If MSB (most significant bit) is 1,
+   then it's negative. 
+** Floats are (usually) 32-bit IEEE 754
+   1-bit sign, 8-bit exponent, 23-bit mantissa
+   value is -1^(s)*2^(e-127)*1.m
+   where s is the sign bit, e is the biased exponent, and m is the matissa
+   The mantissa is the level of precision, while the exponent is essentially
+   the range
+   127 is the bias, to allow negative exponents.  Gives actual exponent range
+   of (-127, 128).
+*** Special values
+    NaN -- not a number
+    +-infinity 
+    +-0 -- Two zeros; which direction did you round from?
+    sub-normals -- Special values where 1's place of the mantissa is zero
+** Doubles are (usually) 64-bit IEEE 754
+   1-bit sign, 11-bit exponent, 52-bit mantissa
+* Bitwise operators
+** and
+   Operator is &
+   Like logical and, but on individual bits, 1 if both bits are 1
+     1111 1101 1001 0001 0110 0111 0111 0100
+     0110 1100 0011 1010 1111 0111 0100 1110 &
+     ---------------------------------------
+     0110 1100 0001 0000 0110 0111 0100 0100
+** or
+   Operator is |
+   Like logical or, but on individual bits, 1 if either bit is 1
+     1111 1101 1001 0001 0110 0111 0111 0100
+     0110 1100 0011 1010 1111 0111 0100 1110 |
+     ---------------------------------------
+     1111 1101 1011 1011 1111 0111 0111 1110
+** xor
+   Operator is ^
+   Like logical exclusive or, but on individual bits, 1 if exactly 1 bit is 1
+     1111 1101 1001 0001 0110 0111 0111 0100
+     0110 1100 0011 1010 1111 0111 0100 1110 ^
+     ---------------------------------------
+     1001 0001 1010 1011 1001 0000 0011 1010
+** not
+   Unary compliment operator ~.  Flips every bit
+     ~1111 1101 1001 0001 0110 0111 0111 0100 ==
+      0000 0010 0110 1110 1001 1000 1000 1011
+** right shift
+   Operator is >>
+   Move bits to the right (fast division by a power of 2), fills in with zeros
+     1111 1101 1001 0001 0110 0111 0111 0100 >> 3 ==
+     0001 1111 1011 0010 0010 1100 1110 1110
+   This operation (shift by 3) divided by 8.
+** left shift
+   Operator is <<
+   Move bits to the right (fast multiplication by a power of 2), fills in
+   with zeros
+     1111 1101 1001 0001 0110 0111 0111 0100 << 5 ==
+     1011 0010 0010 1100 1110 1110 1000 0000
+   This operation (shift by 5) multiplied by 32.
+* Bitfields
+  Allow us to store boolean values using only one bit.  An array of 
+  booleans in a single primitive type.
+  See code example, and more to follow next lecture.

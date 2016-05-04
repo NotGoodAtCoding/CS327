@@ -1,0 +1,55 @@
+Lecture 14
+
+* More function pointers
+** Function pointers as they are used in qsort() are often refered to as
+   "callbacks" of "callback functions"
+   Also very common in GUI programming.  You define a menu.  Something has to
+   happen when the users selects the option, but that's inside the GUI
+   library code, so that code needs a function pointer so that it can "call
+   back" into your code to realize that functionality.
+   Plugins
+   Signal handlers
+
+* A little tangent: When you start using curses, you'll block SIGINT (^C), so
+   you'll need to "kill" rogue programs externally.
+
+   kill - UNIX command
+          kill takes the PID of your program and sends it an arbitrary signal
+          Signal you want is SIGKILL (9)
+          To get process ID, do "ps -fe <name>"
+          kill -9 <pid>
+
+** What's (faster|cleaner) than a bunch of if/else statements?
+   Function tables.  See example program.
+   
+* Declarations
+** Scope and lifetime
+   Scope - Where in a program a variable is accessible
+   Lifetime - when in a program a variable exists
+** Keywords that alter declaration semantics
+*** auto
+    This is the default for variables defined in functions, so you very
+    rarely see it used explicitly.  Variable's scope is restricted to the 
+    function in which it is declared.  Lifetime is the same as that of the
+    function. 
+*** const
+    Makes the variable immutable.  Doesn't affect scope or lifetime.
+    Some compilers will put the variable in the text segment, which means
+    that it's actual lifetime would be equal to that of the program; however,
+    it would be an error to depend on this.
+*** extern
+    Means that the storage for the variable is created elsewhere; used to
+    export data to other compilation units.  It only makes sense to use an
+    external declaration for variables in global scope.
+*** static
+    In a function, changes the variables lifetime to be the lifetime of the
+    program.  Scope is unaffected.
+    On globals, prevents variable or function from being exported from the
+    compilation unit.  This is useful for internal functions of an ADT.
+    Think "private".
+
+Next time...
+
+*** register
+*** volatile
+*** inline

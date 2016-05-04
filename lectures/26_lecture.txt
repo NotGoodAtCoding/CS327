@@ -1,0 +1,34 @@
+Lecture 26
+
+* Useful C++ STL stuff
+** ifstream
+   ifstream i;
+*** peek()
+    i.peek();
+    Allows you to look at the next character (byte) in the stream without
+    removing it from the stream.
+*** get()
+    Returns and consumes the next character in the stream.
+*** getline()
+    Two getline()s in C++
+    std::istream::getline()
+      cin.getline(char *, int)
+      string has to be big enough
+
+      std::getline(cin, std::string &)
+      uses a string object, which can grow.
+*** operator>>()
+    Skips leading whitespace, then reads until the next whitespace.
+** stringstream
+   Similar to Java's string builder.  Let's you use << to build strings.  Use
+      str() to return a reference to a string.
+** Containers
+*** vector
+    Similar to Java ArrayLists.
+    Declare with templated (parametrized) type:
+    vector<int> v;
+*** Iterators
+    inner class in a container or string:
+    vector<int>::iterator vi;
+    Initialize with begin(), iterate until end(), advance with ++, access
+      with *

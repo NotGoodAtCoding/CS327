@@ -1,0 +1,48 @@
+Lecture 12
+
+* More macros
+** function type
+   Looks sort-of like a function
+   Has parentheses and takes arguments
+     #define print(x) printf("%d", x)
+   print(7) becomes printf("%d", 7)
+   print(print(value) becomes printf("%d", printf("%d", 5)) where value is 
+   defined as above.
+** Concatenation
+   Concatenation operator is ##
+   Preprocessor sticks together (concatenates) both operands, no space
+   between them, to make a single symbol.
+   Provides a shorthand
+   # define has_characteristic(character, bit)              \
+     ((character)->npc->characteristics & NPC_##bit)
+
+   has_characteristic(c, SMART) -> ((c)->npc->characteristics & NPC_SMART)
+** Stringification
+   Operator is #
+   Turns the operator into a string
+     #define to_string(s) #s
+     to_string(CS 229) -> "CS 229"
+** How to crash a compiler (there are lots of ways, actually, but here's one)
+
+* Doing generics is C.
+  Needs function pointers
+  How do we declare one?
+    <return type> (*<function name>)(<argument list>)
+  And how do we assign to a function pointer?
+    Assign a function name with no parenthesis
+** sort
+void insertion_sort(int *a, int n)
+{
+  int i, j, t;
+
+  for (i = 1; i < n; i++) {
+    for (t = a[i], j = i - 1; j > -1 && a[j] > t; j--) {
+      a[j + 1] = a[j];
+    }
+    a[j + 1] = t;
+  }
+}
+
+
+** search
+** ADTs

@@ -1,0 +1,41 @@
+Lecture 22
+
+* Overloading
+  Functions
+    Functions can have the same name, as long as they have different
+    formal parameters.  Compiler figures out which one to call based on
+    actual parameters
+  Operators
+    Operators are overloaded by defining special "operator<operator>()"
+    functions, where <operator> is the actual operator, for instance,
+    overload the addition operator by defining operator+().
+* Classes
+  public
+    Anybody can see this field
+  private
+    Only members of this class can see it
+  protected
+    Only this class and subclasses can see it
+  friend
+    Your friends have full access to your privates.
+* Dynamic allocation
+** malloc and free
+   Just like in C: allocate memory and return it to the heap.
+                   work fine on primitive things
+                   Don't work on instances of classes
+** new and delete
+   new: Allocates storage like malloc, but calls the constructor
+   delete: calls the destructor before deleting
+* Destructors
+  Automatically called whenever an instance of a class leaves scope or when
+  we use the delete operator on a pointer to a class object.
+* Calling class methods
+  
+* Static members and methods
+  Like in C, a global static does not get external linkage from that
+  compilation unit
+  Static variables inside functions or methods also work exactly as in C.
+  A class variable declared static is accessible without an instance of the
+  class.  Storage has to be created external to the class.
+  Static methods also may bbe called outside of an instance of the class.
+* String class example

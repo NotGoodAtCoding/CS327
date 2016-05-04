@@ -1,0 +1,53 @@
+Lecture 28
+
+* Polymorphism and inheritance
+** Constructor calls
+   Base class's destructor is called first, and derived class last
+   destructors run in opposite order
+** Multiple inheritance
+   class derived : public base1, public base2...
+*** Diamond problem
+    The diamond problem refers to the ambiguity of the derivation of a type
+    which inherits a common ancestor from more than one direct ancestor.  By
+    default, the derived type inherits an instance of the common ancestor
+    from each direct ancestor.  Explicit scope resolution (using ::) is
+    required to disambiguate.
+*** Virtual inheritance
+    If derived types inherit virtually from a base, only one instance of the
+    base will be created.  This seems to solve the diamond problem; however,
+    what if the derived classes require different configurations of the base
+    in order to work properly?
+** Virtual function tables
+   When an object is created, it gets a pointer to it's virtual function
+   table, or vtable.  This allows the runtime to call the appropriate method
+   when the type is not known.
+* Templates
+  Templated types and methods are declared by prefacing their declaration
+  with "template <class T>", where T is a type variable, not a literal T.
+  The template declaration may have multiple type variables, seperated by
+  commas.  
+  T is then used in place of a type name in the definition.  All operations
+  on items of type T must be defined, or the code will fail to compile.
+  Templates are generally written entirely within headers because the full
+  templated implementation is needed at compile time.
+  Both classes and functions may be templated
+  Templated functions may be specialized
+* Exceptions
+  There is an std::exception class.  The STL throws exceptions of this type.
+  However, exceptions in C++ can be of any type.  In order to catch it, you
+  must have a catch block which is looking for the appropriate type.
+  catch(...) can catch anything.
+  "throw;" (no arguments) in a catch block will rethrow a caught exception.
+** std::exception
+   implements "virtual const char *what() const throw()" which returns
+   a textual description of the exception.
+*** throw() in function declaration means that the function doesn't throw
+    anything.  
+    throw(<type>) means it throws only <type>
+    No "throw()" means it can throw anything
+
+
+    int func(args); // can throw any type of exception
+    int func(args) throw (type); // It only throws exceptions of type type
+    int func(args) throw(); // Function will not throw an exception
+    int func(argc) noexcept; // Function will not throw an exception (C++11)
